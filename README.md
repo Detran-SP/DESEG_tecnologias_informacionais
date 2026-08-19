@@ -1,4 +1,4 @@
-# Apêndice: Bases Abertas de Dados de Sinistros de Trânsito em 15 Países
+# Apêndice: Bases abertas de dados de sinistros de trânsito em 15 países
 
 ## Contexto
 
