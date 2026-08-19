@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apêndice: bases abertas de dados de sinistros de trânsito em 15 países</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+    :root {
+      --fg: #005CA8;
+      --dark: #004077;
+      --lt: #A4CFED;
+      --bg-soft: #f4f8fc;
+      --line: #dce6f0;
+      --text-soft: #5f6368;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #fff;
+      color: #000;
+    }
+
+    .page-topbar {
+      height: 4px;
+      background: linear-gradient(90deg, var(--dark) 0%, var(--fg) 55%, var(--lt) 100%);
+    }
+
+    .main-content {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 2rem 2rem 3rem;
+    }
+
+    @media (max-width: 767.98px) {
+      .main-content {
+        padding: 1rem 1rem 2rem;
+      }
+    }
+
+    .identity-block {
+      border-bottom: 2px solid var(--lt);
+      padding-bottom: 1.75rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+      color: var(--fg);
+      border-bottom: 2px solid var(--lt);
+      padding-bottom: .5rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .section-title .material-icons {
+      font-size: 1.3rem;
+    }
+
+    .accordion-item {
+      border: 1px solid var(--line) !important;
+      border-radius: 2em !important;
+      overflow: hidden;
+      margin-bottom: .9rem;
+      transition: box-shadow .2s;
+    }
+
+    .accordion-item:hover {
+      box-shadow: 0 2px 14px rgba(0,92,168,.10);
+    }
+
+    .accordion-button {
+      color: var(--fg);
+      font-weight: 700;
+      background: #fff;
+      padding: 1.2rem 1.75rem;
+      font-size: 1.02rem;
+    }
+
+    .accordion-button:not(.collapsed) {
+      background: linear-gradient(135deg, rgba(0,92,168,.06) 0%, #fff 70%);
+      color: var(--dark);
+      box-shadow: none;
+    }
+
+    .accordion-button:focus {
+      box-shadow: 0 0 0 .15rem rgba(0,92,168,.25);
+    }
+
+    .accordion-body {
+      padding: 1.6rem;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(164, 207, 237, .28);
+      color: var(--dark);
+      border: 1px solid rgba(0,92,168,.10);
+      border-radius: 999px;
+      padding: .45rem .8rem;
+      font-size: .8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .bases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 1rem;
+    }
+
+    .base-card {
+      border: 1px solid var(--lt);
+      border-radius: 1rem;
+      background: #fff;
+      height: 100%;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .base-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,92,168,.13);
+      border-color: var(--fg);
+    }
+
+    .base-card-body {
+      padding: 1.1rem 1.1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      height: 100%;
+    }
+
+    .base-header {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+    }
+
+    .base-num {
+      width: 2.6rem;
+      height: 2.6rem;
+      min-width: 2.6rem;
+      background: linear-gradient(135deg, var(--fg) 0%, var(--dark) 100%);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 4px 10px rgba(0,92,168,.28);
+      flex-shrink: 0;
+      margin-top: .1rem;
+    }
+
+    .base-title {
+      color: var(--dark);
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.3;
+      margin: 0;
+    }
+
+    .base-context {
+      color: var(--text-soft);
+      font-size: .94rem;
+      line-height: 1.5;
+      margin: 0;
+      flex-grow: 1;
+    }
+
+    .base-context strong {
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    .base-link {
+      margin-top: auto;
+      padding-top: .2rem;
+    }
+
+    .base-link a {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      text-decoration: none;
+      color: var(--fg);
+      font-weight: 700;
+      font-size: .92rem;
+    }
+
+    .base-link a:hover {
+      color: var(--dark);
+      text-decoration: underline;
+    }
+
+    .base-link .material-icons {
+      font-size: 1rem;
+    }
+
+    .identity-meta {
+      margin-top: .35rem;
+      color: #6c757d;
+      font-size: .92rem;
+      line-height: 1.45;
+    }
+
+    footer {
+      border-top: 2px solid var(--lt);
+      background: var(--bg-soft);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .identity-block,
+    #bt02 {
+      animation: fadeUp .4s ease both;
+    }
+  
+    .imi-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .35rem;
+    }
+
+    .imi-pill,
+    .nivel-pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: .3rem .65rem;
+      font-size: .76rem;
+      line-height: 1.2;
+    }
+
+    .imi-pill {
+      background: linear-gradient(135deg, var(--fg) 0%, var(--dark) 100%);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .nivel-pill {
+      background: rgba(164, 207, 237, .28);
+      color: var(--dark);
+      border: 1px solid rgba(0,92,168,.10);
+      font-weight: 400;
+    }
+
+    .nivel-pill b {
+      font-weight: 700;
+      margin-left: .25rem;
+    }
+
+    .nota-metodo {
+      color: var(--text-soft);
+      font-size: .92rem;
+      line-height: 1.55;
+      max-width: 78ch;
+      margin: .75rem 0 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-topbar"></div>
+
+<main class="main-content">
+
+  <div class="identity-block">
+    <h1 class="h3 fw-bold mb-1" style="color:var(--dark)">Bases abertas de dados de sinistros de trânsito em 15 países com altos índices de sinistralidade</h1>
+    <p class="mb-0 small text-muted">Apêndice: bases analisadas e classificação de maturidade informacional</p>
+    <p class="nota-metodo">
+      O Índice de Maturidade Informacional (IMI) é a média aritmética simples das três dimensões avaliadas
+      (periodicidade, interatividade e desagregação), em escala de 0 a 10. As consultas aos portais foram
+      realizadas entre janeiro e fevereiro de 2026; a data de análise de cada base consta em sua ficha.
+      Os endereços podem ter mudado desde então.
+    </p>
+  </div>
+
+  <section id="bt02" class="mb-5">
+    <h2 class="section-title d-flex align-items-center gap-2">
+      <span class="material-icons">search</span> Bases analisadas
+    </h2>
+
+    <div class="accordion" id="accBases">
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#faixa0"
+            aria-expanded="true"
+            aria-controls="faixa0"
+          >
+            Maturidade informacional ▸ Alto
+          </button>
+        </h2>
+
+        <div id="faixa0" class="accordion-collapse collapse show">
+          <div class="accordion-body">
+            <div class="meta-pill">5 bases analisadas &nbsp;·&nbsp; IMI 8,5 ou mais</div>
+
+            <div class="bases-grid">
+              <article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">1</div>
+                    <h3 class="base-title">Colômbia – ANSV</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Observatorio Nacional de Seguridad Vial – Estadísticas e Indicadores de Siniestros Viales (ANSV).</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pela Agencia Nacional de Seguridad Vial (ANSV) – Ministerio de Transporte com dados da polícia/autoridade de trânsito. Analisada em 03/02/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 8,9</b></span><span class="nivel-pill">Periodicidade: <b>Melhor</b></span><span class="nivel-pill">Interatividade: <b>Melhor</b></span><span class="nivel-pill">Desagregação: <b>Média</b></span></div><div class="base-link">
+                    <a href="https://geoportal-ansv-ansv.hub.arcgis.com/" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article><article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">2</div>
+                    <h3 class="base-title">Equador – ESTRA</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Estadísticas de Transporte – Siniestros de Tránsito (ESTRA).</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pelo Instituto Nacional de Estadística y Censos (INEC) - Equador com dados de órgão de trânsito (administrativo). Analisada em 04/02/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 8,9</b></span><span class="nivel-pill">Periodicidade: <b>Melhor</b></span><span class="nivel-pill">Interatividade: <b>Intermediária</b></span><span class="nivel-pill">Desagregação: <b>Alta</b></span></div><div class="base-link">
+                    <a href="https://www.ecuadorencifras.gob.ec/transporte/" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article><article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">3</div>
+                    <h3 class="base-title">México – ATUS</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Accidentes de Tránsito Terrestre en Zonas Urbanas y Suburbanas (ATUS) - méxico.</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pelo Instituto Nacional de Estadística y Geografía (INEGI) com fonte integrada (multifonte). Analisada em 27/01/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 8,9</b></span><span class="nivel-pill">Periodicidade: <b>Melhor</b></span><span class="nivel-pill">Interatividade: <b>Melhor</b></span><span class="nivel-pill">Desagregação: <b>Média</b></span></div><div class="base-link">
+                    <a href="https://en.www.inegi.org.mx/temas/accidentes/" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article><article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">4</div>
+                    <h3 class="base-title">Rússia – GIBDD</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Indicadores do Estado da Segurança do Trânsito Rodoviário (GIBDD).</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pelo Ministério do Interior da Federação Russa – GIBDD (Polícia de Trânsito) com dados da polícia/autoridade de trânsito. Analisada em 28/01/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 8,9</b></span><span class="nivel-pill">Periodicidade: <b>Melhor</b></span><span class="nivel-pill">Interatividade: <b>Melhor</b></span><span class="nivel-pill">Desagregação: <b>Média</b></span></div><div class="base-link">
+                    <a href="http://stat.gibdd.ru/" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article><article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">5</div>
+                    <h3 class="base-title">Turquia – TurkStat</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Estatísticas de Acidentes de Trânsito Rodoviário – Turquia (TurkStat, conjunto anual de tabelas).</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pelo Turkish Statistical Institute (TurkStat) com dados da polícia/autoridade de trânsito. Analisada em 28/01/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 8,9</b></span><span class="nivel-pill">Periodicidade: <b>Melhor</b></span><span class="nivel-pill">Interatividade: <b>Intermediária</b></span><span class="nivel-pill">Desagregação: <b>Alta</b></span></div><div class="base-link">
+                    <a href="https://data.tuik.gov.tr/Search/Search?text=traffic%20accidents" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#faixa1"
+            aria-expanded="false"
+            aria-controls="faixa1"
+          >
+            Maturidade informacional ▸ Médio-alto
+          </button>
+        </h2>
+
+        <div id="faixa1" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <div class="meta-pill">1 base analisada &nbsp;·&nbsp; IMI 7,0 a 8,5</div>
+
+            <div class="bases-grid">
+              <article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">1</div>
+                    <h3 class="base-title">Chile – Observatório de Segurança Viária</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Observatorio de Seguridad Vial – Estadísticas de Siniestros de Tránsito de Chile.</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pela Comisión Nacional de Seguridad de Tránsito (CONASET) com dados da polícia/autoridade de trânsito. Analisada em 02/02/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 7,8</b></span><span class="nivel-pill">Periodicidade: <b>Melhor</b></span><span class="nivel-pill">Interatividade: <b>Intermediária</b></span><span class="nivel-pill">Desagregação: <b>Média</b></span></div><div class="base-link">
+                    <a href="https://www.conaset.cl/biblioteca/" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#faixa2"
+            aria-expanded="false"
+            aria-controls="faixa2"
+          >
+            Maturidade informacional ▸ Médio
+          </button>
+        </h2>
+
+        <div id="faixa2" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <div class="meta-pill">5 bases analisadas &nbsp;·&nbsp; IMI 6,0 a 7,0</div>
+
+            <div class="bases-grid">
+              <article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">1</div>
+                    <h3 class="base-title">Vietnã – Traffic accidents</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Traffic accidents by road type and region (E14.87 / E14.88).</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pela General Statistics Office of Vietnam (GSO) com dados de órgão de trânsito (administrativo). Analisada em 29/01/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 6,7</b></span><span class="nivel-pill">Periodicidade: <b>Intermediária</b></span><span class="nivel-pill">Interatividade: <b>Intermediária</b></span><span class="nivel-pill">Desagregação: <b>Média</b></span></div><div class="base-link">
+                    <a href="https://www.nso.gov.vn/en/px-web/?pxid=E1488&theme=Health%2C%20Culture%2C%20Sport%20and%20Living%20standard" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article><article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">2</div>
+                    <h3 class="base-title">Argentina – Observatório Vial Nacional</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Observatorio Vial Nacional - Argentina.</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pela Dirección de Estadística Vial (DNOV – ANSV) - Secretaria de Transporte e Ministério de Economia com fonte integrada (multifonte). Analisada em 30/01/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 6,7</b></span><span class="nivel-pill">Periodicidade: <b>Inicial</b></span><span class="nivel-pill">Interatividade: <b>Melhor</b></span><span class="nivel-pill">Desagregação: <b>Média</b></span></div><div class="base-link">
+                    <a href="https://www.argentina.gob.ar/seguridadvial/observatoriovialnacional" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article><article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">3</div>
+                    <h3 class="base-title">Paraguai – Observatório Vial</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Observatorio Vial – Estadísticas de Siniestralidad Vial (Paraguay).</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pela Agencia Nacional de Tránsito y Seguridad Vial – ANTSV (Dirección de Observatorio Vial, Estadísticas y Registro de Datos – DOVERD) com fonte integrada (multifonte). Analisada em 04/02/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 6,7</b></span><span class="nivel-pill">Periodicidade: <b>Melhor</b></span><span class="nivel-pill">Interatividade: <b>Inicial</b></span><span class="nivel-pill">Desagregação: <b>Média</b></span></div><div class="base-link">
+                    <a href="https://antsv.gov.py/" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article><article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">4</div>
+                    <h3 class="base-title">Uruguai – UNASEV</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Estadísticas de Siniestralidad Vial – Uruguay (Informes anuales y estudios UNASEV).</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pela Unidad Nacional de Seguridad Vial (UNASEV) – Presidencia de la República Oriental del Uruguay com fonte integrada (multifonte). Analisada em 03/02/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 6,7</b></span><span class="nivel-pill">Periodicidade: <b>Melhor</b></span><span class="nivel-pill">Interatividade: <b>Inicial</b></span><span class="nivel-pill">Desagregação: <b>Média</b></span></div><div class="base-link">
+                    <a href="https://www.gub.uy/unidad-nacional-seguridad-vial/comunicacion/publicaciones/carga-global-siniestros-transito-uruguay" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article><article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">5</div>
+                    <h3 class="base-title">Índia – ADSI</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Accidental Deaths &amp; Suicides in India (ADSI) - 2023.</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pelo Centro Nacional de Informática (NIC), Ministério da Eletrônica e Tecnologia da Informação - Governo da Índia com fonte integrada (multifonte). Analisada em 27/01/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 6,7</b></span><span class="nivel-pill">Periodicidade: <b>Melhor</b></span><span class="nivel-pill">Interatividade: <b>Intermediária</b></span><span class="nivel-pill">Desagregação: <b>Baixa</b></span></div><div class="base-link">
+                    <a href="https://www.data.gov.in/catalog/accidental-deaths-suicides-india-adsi-2023?page=3" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#faixa3"
+            aria-expanded="false"
+            aria-controls="faixa3"
+          >
+            Maturidade informacional ▸ Baixo
+          </button>
+        </h2>
+
+        <div id="faixa3" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <div class="meta-pill">2 bases analisadas &nbsp;·&nbsp; IMI 5,0 a 6,0</div>
+
+            <div class="bases-grid">
+              <article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">1</div>
+                    <h3 class="base-title">China – Statistical Yearbook</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>China Statistical Yearbook – Basic Statistics on Road Traffic Accidents.</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pelo National Bureau of Statistics of China (NBS) a partir de dados do Ministry of Public Security (fonte integrada/multifonte). Analisada em 30/01/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 5,5</b></span><span class="nivel-pill">Periodicidade: <b>Melhor</b></span><span class="nivel-pill">Interatividade: <b>Inicial</b></span><span class="nivel-pill">Desagregação: <b>Baixa</b></span></div><div class="base-link">
+                    <a href="https://www.stats.gov.cn/sj/ndsj/2025/indexeh.htm" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article><article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">2</div>
+                    <h3 class="base-title">Egito – Car &amp; Train Accidents</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Annual Bulletin – Results of Car &amp; Train Accidents.</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pela CAPMAS – Central Agency for Public Mobilization and Statistics com fonte integrada (multifonte). Analisada em 28/01/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 5,5</b></span><span class="nivel-pill">Periodicidade: <b>Melhor</b></span><span class="nivel-pill">Interatividade: <b>Inicial</b></span><span class="nivel-pill">Desagregação: <b>Baixa</b></span></div><div class="base-link">
+                    <a href="https://censusinfo.capmas.gov.eg/metadata-en-v4.2/index.php/catalog/749/overview" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#faixa4"
+            aria-expanded="false"
+            aria-controls="faixa4"
+          >
+            Maturidade informacional ▸ Muito baixo
+          </button>
+        </h2>
+
+        <div id="faixa4" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <div class="meta-pill">2 bases analisadas &nbsp;·&nbsp; IMI até 5,0</div>
+
+            <div class="bases-grid">
+              <article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">1</div>
+                    <h3 class="base-title">Bolívia – Atlas de Seguridad Vial</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Siniestros de Tránsito – Estatísticas Oficiais (Atlas de Seguridad Vial / Anuário).</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pelo Observatorio Boliviano de Seguridad Ciudadana y Lucha Contra las Drogas (OBSCd) com fonte integrada (multifonte). Analisada em 02/02/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 4,4</b></span><span class="nivel-pill">Periodicidade: <b>Inicial</b></span><span class="nivel-pill">Interatividade: <b>Inicial</b></span><span class="nivel-pill">Desagregação: <b>Média</b></span></div><div class="base-link">
+                    <a href="https://obscd.mingobierno.gob.bo/pagina-lista-documento-cartografico" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article><article class="base-card">
+                <div class="base-card-body">
+                  <div class="base-header">
+                    <div class="base-num">2</div>
+                    <h3 class="base-title">Quênia – Road Traffic Crashes</h3>
+                  </div>
+                  <p class="base-context">
+                    <strong>Kenya – Road Traffic Crashes 2012–2023.</strong>
+                    Base de dados sobre sinistros de trânsito, organizada pelo World Bank (Development Data Group) a partir de dados do Ma3Route (observatório/pesquisa). Analisada em 29/01/2026.
+                  </p>
+                  <div class="imi-row"><span class="imi-pill"><b>IMI 4,4</b></span><span class="nivel-pill">Periodicidade: <b>Intermediária</b></span><span class="nivel-pill">Interatividade: <b>Inicial</b></span><span class="nivel-pill">Desagregação: <b>Baixa</b></span></div><div class="base-link">
+                    <a href="https://microdata.worldbank.org/index.php/catalog/6249" target="_blank" rel="noopener noreferrer">
+                      <span class="material-icons">open_in_new</span>Acesse aqui
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="py-3 text-center small text-muted">
+  <div class="container">
+    Material complementar ao artigo. As classificações reproduzem a avaliação registrada no instrumento de coleta
+    do estudo e não expressam posição das instituições responsáveis pelas bases.
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
